@@ -5,11 +5,13 @@ RUN yum update -y && yum -y install sudo openssh-server procps wget unzip mc git
 USER user
 LABEL che:server:8080:ref=tomcat9 che:server:8080:protocol=http che:server:8000:ref=tomcat9-debug che:server:8000:protocol=http
 
-ENV JAVA_VERSION=8u91 JAVA_VERSION_PREFIX=1.8.0_91 MAVEN_VERSION=3.3.9 GRADLE_VERSION=2.14 TOMCAT_VERSION=9.0.0.M9
+ENV JAVA_MAJOR_VERSION=101 JAVA_MINOR_VERSION=b13
+ENV JAVA_VERSION=8u$JAVA_MAJOR_VERSION JAVA_VERSION_PREFIX=1.8.0_$JAVA_MAJOR_VERSION
+ENV MAVEN_VERSION=3.3.9 GRADLE_VERSION=2.14.1 TOMCAT_VERSION=9.0.0.M9
 ENV JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX M2_HOME=/opt/apache-maven-$MAVEN_VERSION GRADLE_HOME=/opt/gradle-$GRADLE_VERSION TOMCAT_HOME=/home/user/tomcat9
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$GRADLE_HOME/bin:$PATH
 
-RUN sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-b14/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/
+RUN sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$JAVA_MINOR_VERSION/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/
 RUN sudo mkdir /opt/apache-maven-$MAVEN_VERSION && sudo wget -qO- "https://www.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" | sudo tar -zx --strip-components=1 -C /opt/apache-maven-$MAVEN_VERSION/
 RUN sudo wget -q "https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" && sudo unzip -q gradle-$GRADLE_VERSION-bin.zip -d /opt/ && sudo rm -f gradle-$GRADLE_VERSION-bin.zip
 
