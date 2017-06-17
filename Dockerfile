@@ -5,14 +5,14 @@ RUN yum update -y && yum -y install sudo openssh-server procps wget unzip mc git
 USER user
 LABEL che:server:8080:ref=tomcat8 che:server:8080:protocol=http che:server:8000:ref=tomcat8-debug che:server:8000:protocol=http
 
-ENV JAVA_MAJOR_VERSION=131 JAVA_MINOR_VERSION=b11 JAVA_VERSION=8u$JAVA_MAJOR_VERSION JAVA_VERSION_PREFIX=1.8.0_$JAVA_MAJOR_VERSION JAVA_HOME=/opt/jdk-$JAVA_VERSION_PREFIX
-ENV SCALA_VERSION=2.12.2 SCALA_HOME=/opt/scala-$SCALA_VERSION
-ENV ANT_VERSION=1.10.1 ANT_HOME=/opt/apache-ant-$ANT_VERSION 
-ENV MVN_VERSION=3.5.0 MVN_HOME=/opt/apache-maven-$MVN_VERSION 
-ENV GRADLE_VERSION=4.0 GRADLE_HOME=/opt/gradle-$GRADLE_VERSION 
-ENV SBT_VERSION=0.13.15 SBT_HOME=/opt/sbt-$SBT_VERSION
+ENV JAVA_MAJOR_VERSION=131 JAVA_MINOR_VERSION=b11
+ENV JAVA_VERSION=8u$JAVA_MAJOR_VERSION JAVA_VERSION_PREFIX=1.8.0_$JAVA_MAJOR_VERSION
+ENV ANT_VERSION=1.10.1 MVN_VERSION=3.5.0 GRADLE_VERSION=4.0
+ENV SCALA_VERSION=2.12.2 SBT_VERSION=0.13.15
+ENV JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX SCALA_HOME=/opt/scala-$SCALA_VERSION MVN_HOME=/opt/apache-maven-$MVN_VERSION GRADLE_HOME=/opt/gradle-$GRADLE_VERSION SBT_HOME=/opt/sbt-$SBT_VERSION TOMCAT_HOME=/home/user/tomcat8
 ENV PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$ANT_HOME/bin:$MVN_HOME/bin:$GRADLE_HOME/bin:$SBT_HOME/bin:$PATH
 
+ENV TOMCAT_VERSION=8.5.15
 ENV TOMCAT_VERSION=8.5.15 TOMCAT_HOME=/home/user/tomcat8
 
 RUN sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$JAVA_MINOR_VERSION/d54c1d3a095b4ff2b6607d096fa80163/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/
