@@ -5,20 +5,20 @@ RUN yum update -y && yum -y install sudo openssh-server procps wget unzip mc git
 USER user
 LABEL che:server:8080:ref=tomcat8 che:server:8080:protocol=http che:server:8000:ref=tomcat8-debug che:server:8000:protocol=http
 
-ENV JAVA_MAJOR_VERSION=131 JAVA_MINOR_VERSION=b11
+ENV JAVA_MAJOR_VERSION=141 JAVA_MINOR_VERSION=b15
 ENV JAVA_VERSION=8u$JAVA_MAJOR_VERSION JAVA_VERSION_PREFIX=1.8.0_$JAVA_MAJOR_VERSION
-ENV ANT_VERSION=1.10.1 MVN_VERSION=3.5.0 GRADLE_VERSION=4.0
+ENV ANT_VERSION=1.10.1 MVN_VERSION=3.5.0 GRADLE_VERSION=4.0.1
 ENV SCALA_VERSION=2.12.2 SBT_VERSION=0.13.15
-ENV JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX SCALA_HOME=/opt/scala-$SCALA_VERSION MVN_HOME=/opt/apache-maven-$MVN_VERSION GRADLE_HOME=/opt/gradle-$GRADLE_VERSION SBT_HOME=/opt/sbt-$SBT_VERSION TOMCAT_HOME=/home/user/tomcat8
+ENV JAVA_HOME=/opt/jdk$JAVA_VERSION_PREFIX SCALA_HOME=/opt/scala-$SCALA_VERSION  ANT_HOME=/opt/apache-ant-$ANT_VERSION MVN_HOME=/opt/apache-maven-$MVN_VERSION GRADLE_HOME=/opt/gradle-$GRADLE_VERSION SBT_HOME=/opt/sbt-$SBT_VERSION TOMCAT_HOME=/home/user/tomcat8
 ENV PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$ANT_HOME/bin:$MVN_HOME/bin:$GRADLE_HOME/bin:$SBT_HOME/bin:$PATH
 
-ENV TOMCAT_VERSION=8.5.15
-ENV TOMCAT_VERSION=8.5.15 TOMCAT_HOME=/home/user/tomcat8
+ENV TOMCAT_VERSION=8.0.45
+ENV TOMCAT_VERSION=8.0.45 TOMCAT_HOME=/home/user/tomcat8
 
-RUN sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$JAVA_MINOR_VERSION/d54c1d3a095b4ff2b6607d096fa80163/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/
+RUN sudo wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" -qO- "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$JAVA_MINOR_VERSION/336fa29ff2bb4ef291e347e091f7f4a7/jdk-$JAVA_VERSION-linux-x64.tar.gz" | sudo tar -zx -C /opt/
 RUN sudo wget -qO- "https://downloads.lightbend.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz" | sudo tar -zx -C /opt/
-RUN sudo mkdir /opt/apache-ant-$ANT_VERSION && sudo wget -qO- "https://www.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz" | sudo tar -zx --strip-components=1 -C $ANT_HOME/
-RUN sudo mkdir /opt/apache-maven-$MVN_VERSION && sudo wget -qO- "https://www.apache.org/dist/maven/maven-3/$MVN_VERSION/binaries/apache-maven-$MVN_VERSION-bin.tar.gz" | sudo tar -zx --strip-components=1 -C $MVN_HOME/
+RUN sudo mkdir $ANT_HOME && sudo wget -qO- "https://www.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz" | sudo tar -zx --strip-components=1 -C $ANT_HOME/
+RUN sudo mkdir $MVN_HOME && sudo wget -qO- "https://www.apache.org/dist/maven/maven-3/$MVN_VERSION/binaries/apache-maven-$MVN_VERSION-bin.tar.gz" | sudo tar -zx --strip-components=1 -C $MVN_HOME/
 RUN sudo wget -q "https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" && sudo unzip -q gradle-$GRADLE_VERSION-bin.zip -d /opt/ && sudo rm -f gradle-$GRADLE_VERSION-bin.zip
 RUN sudo mkdir /opt/sbt-$SBT_VERSION && sudo wget -qO- "https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz" | sudo tar -zx --strip-components=1 -C $SBT_HOME/
 
